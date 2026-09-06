@@ -1,0 +1,581 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3 Quiz · Systems Integration & Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<style>
+/* ===== Tokens (matches reviewer/quiz theme) ===== */
+:root {
+  --bg: #0d1117;
+  --surface: #161d29;
+  --surface-2: #1c2432;
+  --border: #262f40;
+  --text: #e7ecf3;
+  --text-muted: #93a1b8;
+  --text-dim: #5e6b83;
+  --accent: #4fd8c4;
+  --accent-soft: rgba(79, 216, 196, 0.12);
+  --accent-2: #f2b84b;
+  --violet: #8b90fd;
+  --good: #4fd8a0;
+  --good-soft: rgba(79, 216, 160, 0.14);
+  --bad: #f2765f;
+  --bad-soft: rgba(242, 118, 95, 0.14);
+  --radius: 14px;
+  --font-display: "Space Grotesk", "Inter", sans-serif;
+  --font-body: "Inter", sans-serif;
+  --font-mono: "IBM Plex Mono", monospace;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+}
+
+.wires {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  background:
+    radial-gradient(circle at 15% 10%, rgba(79,216,196,0.07), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(139,144,253,0.06), transparent 40%),
+    radial-gradient(circle at 50% 90%, rgba(242,184,75,0.05), transparent 45%);
+}
+
+a { color: inherit; }
+
+/* ===== Top bar ===== */
+.topbar {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(13, 17, 23, 0.85);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid var(--border);
+}
+.topbar-inner {
+  max-width: 760px; margin: 0 auto; padding: 14px 24px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 10px;
+}
+.brand { display: flex; align-items: center; gap: 12px; }
+.brand-mark {
+  font-family: var(--font-mono); font-weight: 600; font-size: 13px;
+  color: var(--bg); background: var(--accent);
+  width: 34px; height: 34px; border-radius: 9px;
+  display: flex; align-items: center; justify-content: center;
+}
+.brand-text { display: flex; flex-direction: column; line-height: 1.2; }
+.brand-course { font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--text-dim); text-transform: uppercase; }
+.brand-sub { font-family: var(--font-display); font-weight: 600; font-size: 15px; }
+.topnav { display: flex; gap: 6px; flex-wrap: wrap; }
+.topnav a {
+  text-decoration: none; font-size: 14px; font-weight: 600;
+  color: var(--text-muted); padding: 8px 16px; border-radius: 999px;
+  transition: all 0.15s ease;
+}
+.topnav a:hover { color: var(--text); }
+.topnav a.active { background: var(--accent-soft); color: var(--accent); }
+
+main { max-width: 760px; margin: 0 auto; padding: 0 24px; }
+
+.hidden { display: none !important; }
+
+/* ===== Intro screen ===== */
+#screen-intro {
+  padding: 80px 0 60px;
+  text-align: center;
+}
+.eyebrow {
+  font-family: var(--font-mono); font-size: 12px; letter-spacing: 0.1em;
+  text-transform: uppercase; color: var(--accent); margin: 0 0 14px;
+}
+#screen-intro h1 {
+  font-family: var(--font-display); font-size: clamp(30px, 5vw, 44px);
+  margin: 0 0 16px;
+}
+.intro-sub { color: var(--text-muted); max-width: 46ch; margin: 0 auto 36px; font-size: 16px; }
+.intro-stats {
+  display: flex; justify-content: center; gap: 32px; margin-bottom: 40px; flex-wrap: wrap;
+}
+.stat { display: flex; flex-direction: column; align-items: center; gap: 4px; }
+.stat-num { font-family: var(--font-display); font-size: 28px; color: var(--accent); font-weight: 700; }
+.stat-label { font-size: 12.5px; color: var(--text-dim); font-family: var(--font-mono); text-transform: uppercase; letter-spacing: 0.05em; }
+
+.btn-primary {
+  border: none; cursor: pointer;
+  background: var(--accent); color: #0a1410;
+  font-weight: 700; font-size: 15px;
+  padding: 14px 32px; border-radius: 999px;
+  font-family: var(--font-body);
+  transition: transform 0.15s ease;
+}
+.btn-primary:hover { transform: translateY(-2px); }
+.btn-primary.small { padding: 10px 22px; font-size: 14px; }
+.btn-ghost {
+  display: inline-flex; align-items: center;
+  text-decoration: none; color: var(--text-muted);
+  border: 1px solid var(--border);
+  padding: 13px 26px; border-radius: 999px; font-size: 15px; font-weight: 600;
+  transition: all 0.15s ease;
+}
+.btn-ghost:hover { color: var(--text); border-color: var(--accent); }
+
+/* ===== Quiz screen ===== */
+#screen-quiz { padding: 40px 0 60px; }
+.quiz-top { margin-bottom: 28px; }
+.progress-track {
+  height: 6px; background: var(--surface); border-radius: 999px; overflow: hidden; margin-bottom: 12px;
+  border: 1px solid var(--border);
+}
+.progress-fill {
+  height: 100%; width: 0%;
+  background: linear-gradient(90deg, var(--accent), var(--violet));
+  transition: width 0.3s ease;
+}
+.quiz-meta {
+  display: flex; justify-content: space-between;
+  font-family: var(--font-mono); font-size: 12.5px; color: var(--text-dim);
+}
+
+.q-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 32px 28px;
+}
+.q-topic {
+  font-family: var(--font-mono); font-size: 11.5px; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--accent-2); margin: 0 0 12px;
+}
+.q-text { font-family: var(--font-display); font-size: 20px; line-height: 1.35; margin: 0 0 24px; }
+
+.options { display: flex; flex-direction: column; gap: 10px; }
+.option {
+  text-align: left;
+  background: var(--surface-2);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-family: var(--font-body);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+.option:hover:not(:disabled) { border-color: var(--accent); }
+.option .opt-letter {
+  font-family: var(--font-mono); font-size: 12px; color: var(--text-dim);
+  border: 1px solid var(--border); width: 22px; height: 22px; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center; flex: none;
+}
+.option:disabled { cursor: default; }
+.option.correct { background: var(--good-soft); border-color: var(--good); }
+.option.correct .opt-letter { color: var(--good); border-color: var(--good); }
+.option.wrong { background: var(--bad-soft); border-color: var(--bad); }
+.option.wrong .opt-letter { color: var(--bad); border-color: var(--bad); }
+.option.dim { opacity: 0.45; }
+
+.feedback {
+  margin-top: 20px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+.feedback p { margin: 0; font-size: 14px; color: var(--text-muted); }
+.feedback p strong { color: var(--text); }
+
+/* ===== Results screen ===== */
+#screen-results { padding: 70px 0 60px; text-align: center; }
+#screen-results h1 { font-family: var(--font-display); font-size: 32px; margin: 0 0 32px; }
+
+.score-ring-wrap { position: relative; width: 160px; height: 160px; margin: 0 auto 28px; }
+.score-ring { width: 100%; height: 100%; transform: rotate(-90deg); }
+.ring-bg { fill: none; stroke: var(--surface-2); stroke-width: 12; }
+.ring-fg {
+  fill: none; stroke: var(--accent); stroke-width: 12; stroke-linecap: round;
+  stroke-dasharray: 440; stroke-dashoffset: 440;
+  transition: stroke-dashoffset 1s ease;
+}
+.score-ring-label {
+  position: absolute; inset: 0; display: flex; flex-direction: column;
+  align-items: center; justify-content: center;
+}
+.score-ring-label #result-score { font-family: var(--font-display); font-size: 36px; font-weight: 700; }
+.score-ring-label .of { font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); }
+
+.result-sub { color: var(--text-muted); margin: 0 0 32px; }
+.result-actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+
+/* Review list on results screen */
+.review-list { text-align: left; margin: 8px 0 36px; display: flex; flex-direction: column; gap: 10px; }
+.review-item {
+  background: var(--surface); border: 1px solid var(--border); border-radius: 12px;
+  padding: 14px 18px; font-size: 13.5px;
+}
+.review-item.miss { border-color: rgba(242,118,95,0.4); }
+.review-item .r-q { color: var(--text); font-weight: 600; margin: 0 0 6px; }
+.review-item .r-a { color: var(--text-muted); margin: 0; }
+.review-item .r-a .r-correct { color: var(--good); font-weight: 600; }
+.review-toggle {
+  background: none; border: 1px solid var(--border); color: var(--text-muted);
+  font-family: var(--font-mono); font-size: 12.5px; padding: 8px 16px;
+  border-radius: 999px; cursor: pointer; margin-bottom: 16px;
+}
+.review-toggle:hover { color: var(--text); border-color: var(--accent); }
+
+.footer {
+  text-align: center; padding: 24px; color: var(--text-dim);
+  font-size: 12.5px; font-family: var(--font-mono);
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 560px) {
+  .intro-stats { gap: 20px; }
+  .q-card { padding: 24px 18px; }
+  .q-text { font-size: 18px; }
+  .feedback { flex-direction: column; align-items: flex-start; }
+}
+</style>
+</head>
+<body>
+
+<div class="wires" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">SI</span>
+      <div class="brand-text">
+        <span class="brand-course">CIT 3102</span>
+        <span class="brand-sub">Systems Integration &amp; Architecture</span>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">M1 Reviewer</a>
+      <a href="quiz.html">M1 Quiz</a>
+      <a href="index2.html">M2 Reviewer</a>
+      <a href="quiz2.html">M2 Quiz</a>
+      <a href="module3.html">M3 Reviewer</a>
+      <a href="quiz3.html" class="active">M3 Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <!-- INTRO SCREEN -->
+  <section class="screen" id="screen-intro">
+    <p class="eyebrow">Module 03 / Quiz</p>
+    <h1>Test your recall</h1>
+    <p class="intro-sub">50 questions covering every pattern, term, and comparison from Module 3 — System Integration Patterns. Each answer grades itself instantly — no submit button, nothing to send anywhere.</p>
+    <div class="intro-stats">
+      <div class="stat"><span class="stat-num">50</span><span class="stat-label">Questions</span></div>
+      <div class="stat"><span class="stat-num">18</span><span class="stat-label">Topics</span></div>
+      <div class="stat"><span class="stat-num">∞</span><span class="stat-label">Retakes</span></div>
+    </div>
+    <button class="btn-primary" id="start-btn">Start Quiz →</button>
+  </section>
+
+  <!-- QUIZ SCREEN -->
+  <section class="screen hidden" id="screen-quiz">
+    <div class="quiz-top">
+      <div class="progress-track"><div class="progress-fill" id="progress-fill"></div></div>
+      <div class="quiz-meta">
+        <span id="q-counter">Question 1 / 50</span>
+        <span id="q-score">Score: 0</span>
+      </div>
+    </div>
+
+    <div class="q-card">
+      <p class="q-topic" id="q-topic">Topic</p>
+      <h2 class="q-text" id="q-text">Question text goes here</h2>
+      <div class="options" id="options"></div>
+    </div>
+
+    <div class="feedback hidden" id="feedback">
+      <p id="feedback-text"></p>
+      <button class="btn-primary small" id="next-btn">Next →</button>
+    </div>
+  </section>
+
+  <!-- RESULTS SCREEN -->
+  <section class="screen hidden" id="screen-results">
+    <p class="eyebrow">Results</p>
+    <h1 id="result-headline">Nice work</h1>
+    <div class="score-ring-wrap">
+      <svg class="score-ring" viewBox="0 0 160 160">
+        <circle class="ring-bg" cx="80" cy="80" r="70"></circle>
+        <circle class="ring-fg" id="ring-fg" cx="80" cy="80" r="70"></circle>
+      </svg>
+      <div class="score-ring-label">
+        <span id="result-score">0</span>
+        <span class="of">/ 50</span>
+      </div>
+    </div>
+    <p class="result-sub" id="result-sub">You got a percentage of questions right.</p>
+
+    <button class="review-toggle hidden" id="review-toggle">Show missed questions ▾</button>
+    <div class="review-list hidden" id="review-list"></div>
+
+    <div class="result-actions">
+      <button class="btn-primary" id="retake-btn">Retake Quiz</button>
+      <a class="btn-ghost" href="module3.html">Back to Reviewer</a>
+    </div>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>CIT 3102 · Systems Integration and Architecture — Module 3 Quiz</p>
+</footer>
+
+<script>
+// ===== Question bank: Module 3 — System Integration Patterns =====
+const QUESTIONS = [
+  { topic: "Shape & Wiring", q: "How many SHAPE patterns (the movement of data) does Module 3 define?", options: ["5", "7", "9", "4"], correct: 0 },
+  { topic: "Shape & Wiring", q: "How many WIRING patterns (the connections between systems) does Module 3 define?", options: ["5", "6", "7", "8"], correct: 2 },
+  { topic: "UE Example", q: "UE's registrar pulls grades from three campuses into one dean's dashboard. What is the SHAPE?", options: ["Migration", "Broadcast", "Aggregation", "Correlation"], correct: 2 },
+  { topic: "Data Integration Pattern", q: "What is a 'Data Integration Pattern'?", options: ["A structured approach to integrating data", "A type of database index", "A programming language", "A hardware specification"], correct: 0 },
+  { topic: "Migration", q: "Migration is best described as:", options: ["Two-way, continuous, many systems", "One-way, one-to-one, one time", "One-way, one-to-many, continuous", "Two-way, two systems, continuous"], correct: 1 },
+  { topic: "Migration", q: "What are the three parts of a Migration?", options: ["Filtering criteria, transformation, verification checks", "Topics, brokers, subscribers", "Requests, responses, timeouts", "Hubs, spokes, adapters"], correct: 0 },
+  { topic: "Migration", q: "Which example matches Migration?", options: ["PAGASA issues a typhoon signal", "Every record from 1995 onward moves over one weekend", "The kitchen tells all branches it's out of lechon kawali", "An enrollment dashboard shows one headcount"], correct: 1 },
+  { topic: "Broadcast", q: "Broadcast is best described as:", options: ["One-way, one-to-many, continuous", "Two-way, two systems, continuous", "One-way, one-to-one, one time", "Many-to-many, scheduled"], correct: 0 },
+  { topic: "Broadcast", q: "Which example matches Broadcast?", options: ["PAGASA issues a typhoon signal", "PhilHealth syncs with a hospital", "A migration of old records", "A nightly sales dashboard"], correct: 0 },
+  { topic: "Bi-Directional Sync", q: "Which pattern is the ONLY one in which two systems can disagree?", options: ["Migration", "Broadcast", "Bi-Directional Sync", "Aggregation"], correct: 2 },
+  { topic: "Bi-Directional Sync", q: "Which example matches Bi-Directional Sync?", options: ["Every record from 1995 moves over a weekend", "When the kitchen runs out of lechon kawali, all three branches must know", "A dean's dashboard shows one headcount", "PhilHealth syncs only shared patients"], correct: 1 },
+  { topic: "Correlation", q: "Correlation is similar to Bi-Directional Sync, except it only syncs:", options: ["Data pertinent to both systems", "Data older than one year", "Data from a single system", "Data that has never been migrated"], correct: 0 },
+  { topic: "Correlation", q: "Does Correlation ever create new records?", options: ["Yes, always", "No, never", "Only during migration", "Only on weekends"], correct: 1 },
+  { topic: "Correlation", q: "Which example matches Correlation?", options: ["PAGASA issues a typhoon signal", "PhilHealth and a hospital sync only the members who are also patients there", "Every record from 1995 moves over a weekend", "A retailer connects to three payment gateways"], correct: 1 },
+  { topic: "Aggregation", q: "Aggregation provides a centralized view of real-time data from:", options: ["A single system only", "Numerous systems", "No systems", "Only archived systems"], correct: 1 },
+  { topic: "Aggregation", q: "Aggregation is typically implemented using:", options: ["ETL or ELT", "P2P or Hub-and-Spoke", "SOAP or WSDL", "HTTP or FTP only"], correct: 0 },
+  { topic: "Aggregation", q: "Which example matches Aggregation?", options: ["An enrollment dashboard showing one headcount across three campuses", "A typhoon signal broadcast", "A conflict between two systems", "A direct link between a website and PayPal"], correct: 0 },
+  { topic: "Point-to-Point", q: "Point-to-Point integration connects systems:", options: ["Through a central hub", "Directly to one another, with no mediator", "Only through a message broker", "Only through scheduled files"], correct: 1 },
+  { topic: "Point-to-Point", q: "Point-to-Point is described as having what kind of coupling?", options: ["Loose coupling", "Tight coupling", "No coupling", "Elastic coupling"], correct: 1 },
+  { topic: "Point-to-Point", q: "What is the formula for the number of connections needed in Point-to-Point integration among N systems?", options: ["N x (N-1) / 2", "N + 1", "N squared", "2N"], correct: 0 },
+  { topic: "Hub-and-Spoke", q: "In Hub-and-Spoke integration, systems connect to:", options: ["Each other directly", "A central integration hub or middleware", "A file server only", "Nothing — they operate independently"], correct: 1 },
+  { topic: "Hub-and-Spoke", q: "What is the main risk of Hub-and-Spoke integration?", options: ["It cannot scale at all", "The hub is a single point of failure", "It requires no middleware", "It only supports two systems"], correct: 1 },
+  { topic: "Request-Response", q: "Request-Response integration is what kind of communication?", options: ["Asynchronous", "Synchronous", "File-based only", "Broadcast-only"], correct: 1 },
+  { topic: "Request-Response", q: "In Request-Response, what happens to the requesting system while it waits?", options: ["It stops processing until the answer or timeout arrives", "It processes other tasks freely", "It shuts down permanently", "It becomes the new hub"], correct: 0 },
+  { topic: "Pub/Sub", q: "Publish-Subscribe integration relies on a central component called the:", options: ["Integration hub", "Message broker", "Data warehouse", "Filtering engine"], correct: 1 },
+  { topic: "Pub/Sub", q: "In Pub/Sub, messages are organized into:", options: ["Topics or channels", "Migration batches", "Hub spokes", "Data silos"], correct: 0 },
+  { topic: "Pub/Sub", q: "Which two message brokers are named as examples for Pub/Sub?", options: ["Apache Kafka and RabbitMQ", "MySQL and PostgreSQL", "PayPal and Stripe", "SOAP and WSDL"], correct: 0 },
+  { topic: "File-Based", q: "File-Based integration exchanges data:", options: ["Synchronously, in real time", "Asynchronously, through files", "Only through direct API calls", "Only through a message broker"], correct: 1 },
+  { topic: "File-Based", q: "File-Based integration is best suited for:", options: ["Real-time trading platforms", "Batch processing and older systems that don't support real-time integration", "IoT sensor networks", "Live inventory tracking"], correct: 1 },
+  { topic: "Real-Time", q: "Real-Time integration emphasizes data transfer within:", options: ["Milliseconds or seconds", "Days or weeks", "Once per quarter", "Once per academic term"], correct: 0 },
+  { topic: "Real-Time", q: "Where is Real-Time integration best used?", options: ["IoT, trading platforms, financial and real-time analytics", "Payroll run once a month", "Annual report generation", "Static website hosting"], correct: 0 },
+  { topic: "Hybrid", q: "In the Point-to-Point + Message Queuing hybrid, what does MQ handle?", options: ["Immediate request-response only", "Asynchronous and reliable communication", "Nothing — it's unused", "Only file transfers"], correct: 1 },
+  { topic: "Hybrid", q: "In the Hub-and-Spoke + Pub/Sub hybrid, what enables event-driven communication?", options: ["The hub alone", "Pub/Sub", "File-Based transfer", "Request-Response"], correct: 1 },
+  { topic: "Hybrid", q: "In the File-Based + Real-Time hybrid, File-Based handles:", options: ["Bulk and historical data on a schedule", "Instant millisecond events", "Nothing at all", "Only security certificates"], correct: 0 },
+  { topic: "Hybrid", q: "In the SOA + Microservices hybrid, SOA services are described as:", options: ["Fine-grained and independent", "Coarse-grained and reusable", "Entirely obsolete", "Only used for file transfer"], correct: 1 },
+  { topic: "Hybrid", q: "Microservices were popularized around what period?", options: ["Late 1990s", "2011–2014", "1980s", "2020s only"], correct: 1 },
+  { topic: "Comparison Tables", q: "In the comparison table, which side is described as having 'loose coupling'?", options: ["Point-to-Point", "Hub-and-Spoke", "Both equally", "Neither"], correct: 1 },
+  { topic: "Comparison Tables", q: "In the comparison table, which side says 'sender knows receiver'?", options: ["Request-Response", "Pub/Sub", "File-Based", "Real-Time"], correct: 0 },
+  { topic: "Comparison Tables", q: "In the comparison table, which side lists 'Apache Kafka, RabbitMQ' as its technology?", options: ["Request-Response", "Pub/Sub", "Point-to-Point", "File-Based"], correct: 1 },
+  { topic: "Shopee Example", q: "In the Shopee example, 'You pay at checkout and wait for the screen' maps to which wiring pattern?", options: ["Pub/Sub", "Request-Response", "File-Based", "Hub-and-Spoke"], correct: 1 },
+  { topic: "Shopee Example", q: "In the Shopee example, 'The stock count drops the moment you order' maps to which wiring pattern?", options: ["Real-Time", "File-Based", "Request-Response", "Hub-and-Spoke"], correct: 0 },
+  { topic: "Shopee Example", q: "In the Shopee example, 'The seller, courier, and you all get the order update' has which shape and wiring?", options: ["Shape: Broadcast, Wiring: Pub/Sub", "Shape: Aggregation, Wiring: File-Based", "Shape: Correlation, Wiring: Hub-and-Spoke", "Shape: Migration, Wiring: Request-Response"], correct: 0 },
+  { topic: "Shopee Example", q: "In the Shopee example, 'Nightly sales figures land in the seller's dashboard' has which shape and wiring?", options: ["Shape: Broadcast, Wiring: Real-Time", "Shape: Aggregation, Wiring: File-Based", "Shape: Correlation, Wiring: Pub/Sub", "Shape: Migration, Wiring: Hub-and-Spoke"], correct: 1 },
+  { topic: "Shopee Example", q: "In the Shopee example, 'Shopee and the courier reconcile only their shared orders' has which shape and wiring?", options: ["Shape: Correlation, Wiring: Hub-and-Spoke", "Shape: Broadcast, Wiring: Pub/Sub", "Shape: Aggregation, Wiring: Real-Time", "Shape: Migration, Wiring: File-Based"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is 'Data Silo'?", options: ["Data trapped in one system, in a format other systems can't use", "A single unified database", "A type of message broker", "A backup server"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is an 'Interface' in Point-to-Point integration?", options: ["The direct link built between two systems", "A type of message broker", "A data warehouse component", "The hub's dashboard"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is 'Decoupling'?", options: ["Systems don't need knowledge of each other's internals to work together", "Two systems must share identical code", "A synonym for migration", "A type of file format"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is a 'Timeout'?", options: ["The limit on how long a requester will wait before giving up", "The total number of systems connected", "A scheduled file transfer", "A synonym for latency"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is 'Throughput'?", options: ["How much data a system can handle in a given time", "The delay before data arrives", "The number of hubs in a network", "A type of file format"], correct: 0 },
+  { topic: "Terms Glossary", q: "What is 'Latency'?", options: ["The delay between sending something and it arriving", "The total volume of data stored", "A synonym for throughput", "The number of subscribers to a topic"], correct: 0 },
+];
+
+// ===== State =====
+let order = [];
+let current = 0;
+let score = 0;
+let answered = false;
+let missed = []; // {topic, q, chosenText, correctText}
+
+const screenIntro = document.getElementById("screen-intro");
+const screenQuiz = document.getElementById("screen-quiz");
+const screenResults = document.getElementById("screen-results");
+
+const qTopic = document.getElementById("q-topic");
+const qText = document.getElementById("q-text");
+const optionsEl = document.getElementById("options");
+const feedbackEl = document.getElementById("feedback");
+const feedbackText = document.getElementById("feedback-text");
+const progressFill = document.getElementById("progress-fill");
+const qCounter = document.getElementById("q-counter");
+const qScore = document.getElementById("q-score");
+
+function shuffle(arr) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]];
+  }
+  return a;
+}
+
+function startQuiz() {
+  order = shuffle(QUESTIONS.map((_, i) => i));
+  current = 0;
+  score = 0;
+  answered = false;
+  missed = [];
+  screenIntro.classList.add("hidden");
+  screenResults.classList.add("hidden");
+  screenQuiz.classList.remove("hidden");
+  renderQuestion();
+}
+
+function renderQuestion() {
+  answered = false;
+  feedbackEl.classList.add("hidden");
+  const qIndex = order[current];
+  const question = QUESTIONS[qIndex];
+
+  qTopic.textContent = question.topic;
+  qText.textContent = question.q;
+  qCounter.textContent = `Question ${current + 1} / ${QUESTIONS.length}`;
+  qScore.textContent = `Score: ${score}`;
+  progressFill.style.width = `${(current / QUESTIONS.length) * 100}%`;
+
+  const letters = ["A", "B", "C", "D"];
+  const optIndices = shuffle(question.options.map((_, i) => i));
+
+  optionsEl.innerHTML = "";
+  optIndices.forEach((origIndex, pos) => {
+    const btn = document.createElement("button");
+    btn.className = "option";
+    btn.innerHTML = `<span class="opt-letter">${letters[pos]}</span><span>${question.options[origIndex]}</span>`;
+    btn.addEventListener("click", () => selectAnswer(origIndex, question, btn));
+    optionsEl.appendChild(btn);
+  });
+}
+
+function selectAnswer(chosenIndex, question, btnEl) {
+  if (answered) return;
+  answered = true;
+
+  const allButtons = optionsEl.querySelectorAll(".option");
+  allButtons.forEach((b) => (b.disabled = true));
+
+  const isCorrect = chosenIndex === question.correct;
+  if (isCorrect) {
+    score++;
+  } else {
+    missed.push({
+      topic: question.topic,
+      q: question.q,
+      chosenText: question.options[chosenIndex],
+      correctText: question.options[question.correct]
+    });
+  }
+
+  allButtons.forEach((b) => {
+    const label = b.querySelector("span:last-child").textContent;
+    if (label === question.options[question.correct]) {
+      b.classList.add("correct");
+    } else if (b === btnEl && !isCorrect) {
+      b.classList.add("wrong");
+    } else {
+      b.classList.add("dim");
+    }
+  });
+
+  feedbackText.innerHTML = isCorrect
+    ? `<strong>Correct!</strong> Nice recall.`
+    : `<strong>Not quite.</strong> The right answer is highlighted above.`;
+  feedbackEl.classList.remove("hidden");
+  qScore.textContent = `Score: ${score}`;
+}
+
+function nextQuestion() {
+  current++;
+  if (current >= QUESTIONS.length) {
+    showResults();
+  } else {
+    renderQuestion();
+  }
+}
+
+function showResults() {
+  progressFill.style.width = "100%";
+  screenQuiz.classList.add("hidden");
+  screenResults.classList.remove("hidden");
+
+  const pct = Math.round((score / QUESTIONS.length) * 100);
+  document.getElementById("result-score").textContent = score;
+
+  const headline = document.getElementById("result-headline");
+  const sub = document.getElementById("result-sub");
+  if (pct >= 90) {
+    headline.textContent = "Module 3, mastered.";
+  } else if (pct >= 70) {
+    headline.textContent = "Solid grasp.";
+  } else if (pct >= 50) {
+    headline.textContent = "Getting there.";
+  } else {
+    headline.textContent = "Back to the reviewer.";
+  }
+  sub.textContent = `You got ${score} out of ${QUESTIONS.length} right (${pct}%).`;
+
+  const ring = document.getElementById("ring-fg");
+  const circumference = 2 * Math.PI * 70;
+  const offset = circumference - (pct / 100) * circumference;
+  ring.style.strokeDasharray = `${circumference}`;
+  ring.style.strokeDashoffset = `${circumference}`;
+  requestAnimationFrame(() => {
+    ring.style.strokeDashoffset = `${offset}`;
+  });
+
+  const reviewToggle = document.getElementById("review-toggle");
+  const reviewList = document.getElementById("review-list");
+  reviewList.innerHTML = "";
+
+  if (missed.length > 0) {
+    reviewToggle.classList.remove("hidden");
+    reviewToggle.textContent = `Show missed questions (${missed.length}) ▾`;
+    missed.forEach((m) => {
+      const div = document.createElement("div");
+      div.className = "review-item miss";
+      div.innerHTML = `<p class="r-q">[${m.topic}] ${m.q}</p><p class="r-a">Your answer: ${m.chosenText}<br>Correct: <span class="r-correct">${m.correctText}</span></p>`;
+      reviewList.appendChild(div);
+    });
+  } else {
+    reviewToggle.classList.add("hidden");
+  }
+}
+
+document.getElementById("review-toggle").addEventListener("click", () => {
+  const reviewList = document.getElementById("review-list");
+  const reviewToggle = document.getElementById("review-toggle");
+  const isHidden = reviewList.classList.contains("hidden");
+  reviewList.classList.toggle("hidden");
+  reviewToggle.textContent = isHidden
+    ? `Hide missed questions (${missed.length}) ▴`
+    : `Show missed questions (${missed.length}) ▾`;
+});
+
+document.getElementById("start-btn").addEventListener("click", startQuiz);
+document.getElementById("next-btn").addEventListener("click", nextQuestion);
+document.getElementById("retake-btn").addEventListener("click", startQuiz);
+</script>
+</body>
+</html>

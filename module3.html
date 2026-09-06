@@ -1,0 +1,437 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Module 3 Reviewer · Systems Integration & Architecture</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="reviewer.css">
+</head>
+<body>
+
+<div class="wires" aria-hidden="true"></div>
+
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand">
+      <span class="brand-mark">SI</span>
+      <div class="brand-text">
+        <span class="brand-course">CIT 3102</span>
+        <span class="brand-sub">Systems Integration &amp; Architecture</span>
+      </div>
+    </div>
+    <nav class="topnav">
+      <a href="index.html">M1 Reviewer</a>
+      <a href="quiz.html">M1 Quiz</a>
+      <a href="index2.html">M2 Reviewer</a>
+      <a href="quiz2.html">M2 Quiz</a>
+      <a href="module3.html" class="active">M3 Reviewer</a>
+      <a href="quiz3.html">M3 Quiz</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+
+  <section class="hero">
+    <div class="hero-text">
+      <p class="eyebrow">Module 03 / Reviewer</p>
+      <h1>System Integration Patterns</h1>
+      <p class="hero-sub">Every pattern, term, and comparison from Module 3 — reorganized so it's actually reviewable. Everything below can be tapped open, and every list keeps its original count so you know when you've got them all.</p>
+    </div>
+    <svg class="hero-diagram" viewBox="0 0 360 260" aria-hidden="true">
+      <g class="wire-lines">
+        <line x1="180" y1="130" x2="60" y2="50"></line>
+        <line x1="180" y1="130" x2="300" y2="50"></line>
+        <line x1="180" y1="130" x2="50" y2="180"></line>
+        <line x1="180" y1="130" x2="310" y2="180"></line>
+        <line x1="180" y1="130" x2="180" y2="230"></line>
+      </g>
+      <circle class="node node-hub" cx="180" cy="130" r="14"></circle>
+      <circle class="node" cx="60" cy="50" r="8"></circle>
+      <circle class="node" cx="300" cy="50" r="8"></circle>
+      <circle class="node" cx="50" cy="180" r="8"></circle>
+      <circle class="node" cx="310" cy="180" r="8"></circle>
+      <circle class="node" cx="180" cy="230" r="8"></circle>
+    </svg>
+  </section>
+
+  <nav class="toc" aria-label="Section quick links">
+    <a href="#overview">01 Shape &amp; Wiring</a>
+    <a href="#dip">02 Data Integration Pattern</a>
+    <a href="#shapes">03 Five Data Moving Patterns</a>
+    <a href="#shape-examples">04 Shape Examples</a>
+    <a href="#wiring">05 Seven Wiring Patterns</a>
+    <a href="#hybrid">06 Hybrid Integration</a>
+    <a href="#compare">07 Comparison Tables</a>
+    <a href="#terms">08 Terms Glossary</a>
+    <a href="#shopee">09 One App, Five Patterns</a>
+  </nav>
+
+  <!-- 01 OVERVIEW -->
+  <section class="block" id="overview">
+    <div class="block-head">
+      <span class="block-num">01</span>
+      <h2>Integration Has Shape and Wiring</h2>
+    </div>
+    <div class="card-grid two">
+      <div class="def-card">
+        <h3>Shape — the Data</h3>
+        <p>How data moves. There are <strong>5</strong> shape patterns describing the movement of data between systems.</p>
+      </div>
+      <div class="def-card">
+        <h3>Wiring — the System</h3>
+        <p>How systems are connected. There are <strong>7</strong> wiring patterns describing the connections between systems.</p>
+      </div>
+    </div>
+
+    <div class="compare-table" style="margin-top:24px;">
+      <div class="compare-col">
+        <h4>Shape (5)</h4>
+        <ul>
+          <li>1. Migration</li>
+          <li>2. Broadcast</li>
+          <li>3. Bi-Directional Sync</li>
+          <li>4. Correlation</li>
+          <li>5. Aggregation</li>
+        </ul>
+      </div>
+      <div class="compare-divider" aria-hidden="true">+</div>
+      <div class="compare-col">
+        <h4>Wiring (7)</h4>
+        <ul>
+          <li>A. Point-to-Point</li>
+          <li>B. Hub-and-Spoke</li>
+          <li>C. Publish-Subscribe</li>
+          <li>D. Request-Response</li>
+          <li>E. File-Based</li>
+          <li>F. Real-Time</li>
+          <li>G. Hybrid</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="card-grid" style="margin-top:24px;">
+      <div class="def-card accent">
+        <h3>Worked Example — UE's Registrar</h3>
+        <p>The registrar pulls grades from three campuses into one dean's dashboard.</p>
+        <ul class="tag-list">
+          <li><strong>Shape: Aggregation</strong> — many sources, one target.</li>
+          <li><strong>Wiring: File-Based</strong> — each campus emails an Excel file at the end of the term. <em>OR</em> <strong>Real-Time</strong> — each campus pushes every grade the moment it is encoded.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 02 DATA INTEGRATION PATTERN -->
+  <section class="block" id="dip">
+    <div class="block-head">
+      <span class="block-num">02</span>
+      <h2>Data Integration Pattern</h2>
+    </div>
+    <div class="card-grid two">
+      <div class="def-card">
+        <h3>Data Integration Pattern</h3>
+        <p>A structured approach to integrating data.</p>
+      </div>
+      <div class="def-card">
+        <h3>Data Integration</h3>
+        <p>The process of transporting, transforming, and combining data in all its forms.</p>
+      </div>
+      <div class="def-card">
+        <h3>Pattern</h3>
+        <p>Helps standardize the process and sync data.</p>
+      </div>
+      <div class="def-card">
+        <h3>Data Silo</h3>
+        <p>Data formats that are incompatible with each other.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 03 FIVE DATA MOVING PATTERNS -->
+  <section class="block" id="shapes">
+    <div class="block-head">
+      <span class="block-num">03</span>
+      <h2>5 Data Moving Patterns (Shape)</h2>
+    </div>
+    <div class="accordion">
+      <details open>
+        <summary><span>Migration</span><i>1</i></summary>
+        <p><strong>One-way; one-to-one; one time.</strong> Transfer of data in one direction, from one system to another, in a single discrete session. Three parts: <strong>filtering criteria</strong>, <strong>transformation</strong>, and <strong>verification checks</strong>. Keeps you from being locked into a vendor — without it you'd lose acquired data if you were unable to move it. Built to handle enormous volumes and process a large number of records in parallel. There are <strong>no second chances</strong> — once off, it's permanent.</p>
+      </details>
+      <details>
+        <summary><span>Broadcast</span><i>2</i></summary>
+        <p><strong>One-way; one-to-many; continuous.</strong> Constant transmission of data from a single source to multiple destinations. It is <strong>transactional</strong> — applies only to data that has moved since the last time it moved, never the whole dataset. Initiated either by an <strong>event</strong> or on a <strong>timetable</strong>.</p>
+      </details>
+      <details>
+        <summary><span>Bi-Directional Sync</span><i>3</i></summary>
+        <p><strong>Two-way; two systems; continuous.</strong> Process of combining two datasets from two separate systems; each exists independently. Performs in <strong>unison</strong> to ensure both sides have an accurate, up-to-date view. It is the <strong>only</strong> pattern in which two systems can <strong>disagree</strong> — a <strong>conflict</strong> arises if both change the same record at the same moment, and something has to decide who wins.</p>
+      </details>
+      <details>
+        <summary><span>Correlation</span><i>4</i></summary>
+        <p><strong>Two-way; two systems; continuous.</strong> Similar to bi-directional sync, except carried out only on data that is <strong>pertinent to both systems</strong>. Performs sync at the <strong>intersection</strong> of two datasets and <strong>never</strong> creates new records. Includes a filter — only records that exist in both. Simpler, faster, and more time-efficient than bi-directional sync.</p>
+      </details>
+      <details>
+        <summary><span>Aggregation</span><i>5</i></summary>
+        <p>Centralized view of real-time data from numerous systems. <strong>Merges</strong> multiple systems into a single system; data is <strong>retrieved, merged, and transformed</strong>. Implemented using <strong>ETL</strong> or <strong>ELT</strong>, feeding a <strong>data warehouse</strong>.</p>
+      </details>
+    </div>
+  </section>
+
+  <!-- 04 SHAPE EXAMPLES -->
+  <section class="block" id="shape-examples">
+    <div class="block-head">
+      <span class="block-num">04</span>
+      <h2>Shape Patterns in Practice</h2>
+    </div>
+    <div class="pill-grid five">
+      <div class="pill-card"><span class="pill-index">1</span>Migration — every record from 1995 onward moves over one weekend</div>
+      <div class="pill-card"><span class="pill-index">2</span>Broadcast — PAGASA issues a typhoon signal</div>
+      <div class="pill-card"><span class="pill-index">3</span>Bi-Directional Sync — when the kitchen runs out of lechon kawali, all three must know</div>
+      <div class="pill-card"><span class="pill-index">4</span>Correlation — PhilHealth and a hospital sync only members who are also patients there</div>
+      <div class="pill-card"><span class="pill-index">5</span>Aggregation — an enrollment dashboard showing one headcount across three campuses</div>
+    </div>
+  </section>
+
+  <!-- 05 SEVEN WIRING PATTERNS -->
+  <section class="block" id="wiring">
+    <div class="block-head">
+      <span class="block-num">05</span>
+      <h2>7 System Wiring Patterns</h2>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><line x1="20" y1="80" x2="140" y2="20"/><circle cx="20" cy="80" r="7"/><circle cx="140" cy="20" r="7"/></svg>
+      <div class="method-text">
+        <h3>Point-to-Point</h3>
+        <p>Individual systems connect directly to one another, no mediator or hub. <strong>Direct integration</strong> via custom interfaces built from scratch. <strong>Tight coupling</strong> — a change in one system forces changes in the one it's connected to. Simple to implement. Connections = <strong>N × (N-1) / 2</strong>. Example: a retailer integrating its website with PayPal, Stripe, and Braintree.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><line x1="80" y1="50" x2="20" y2="15"/><line x1="80" y1="50" x2="140" y2="15"/><line x1="80" y1="50" x2="20" y2="85"/><line x1="80" y1="50" x2="140" y2="85"/><circle class="hub" cx="80" cy="50" r="8"/><circle cx="20" cy="15" r="6"/><circle cx="140" cy="15" r="6"/><circle cx="20" cy="85" r="6"/><circle cx="140" cy="85" r="6"/></svg>
+      <div class="method-text">
+        <h3>Hub-and-Spoke</h3>
+        <p>Numerous systems connect to a central <strong>integration hub</strong> (middleware). <strong>Indirect communication</strong> — systems talk through the hub, which provides <strong>decoupling</strong>. Scales well and routes communications correctly, but the hub is a <strong>single point of failure</strong>. Example: an ESB linking a storefront, inventory, and order fulfillment.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><line x1="20" y1="50" x2="140" y2="50" stroke-dasharray="6 5"/><circle cx="20" cy="50" r="7"/><circle cx="140" cy="50" r="7"/></svg>
+      <div class="method-text">
+        <h3>Request-Response</h3>
+        <p><strong>Synchronous</strong> communication — one system makes a request and <strong>waits</strong> for the other to respond. A <strong>blocking operation</strong>: the requester stops processing until the answer or timeout arrives. Used for HTTP APIs, web services, client-server apps. Weakness: timeout settings and error handling. Example: a shopping system requests a payment server to process payment.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><rect x="65" y="35" width="30" height="30" rx="4"/><line x1="30" y1="50" x2="65" y2="50"/><line x1="95" y1="50" x2="130" y2="50"/><circle cx="30" cy="50" r="6"/><circle cx="130" cy="30" r="6"/><circle cx="130" cy="70" r="6"/><line x1="95" y1="50" x2="130" y2="30"/><line x1="95" y1="50" x2="130" y2="70"/></svg>
+      <div class="method-text">
+        <h3>Publish-Subscribe (Pub/Sub)</h3>
+        <p><strong>Asynchronous</strong>, event-driven communication through a <strong>message broker</strong>. Messages go to <strong>topics/channels</strong>; subscribers get them when available. Several subscribers can consume simultaneously. Uses brokers like <strong>Apache Kafka</strong> or <strong>RabbitMQ</strong>. Benefit: real-time, loosely-tied communication. Weakness: broker availability. Example: fleet management publishes to a topic; subscribers get real-time updates.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><rect x="20" y="35" width="30" height="30" rx="3"/><line x1="50" y1="50" x2="140" y2="50"/><circle cx="140" cy="50" r="7"/></svg>
+      <div class="method-text">
+        <h3>File-Based</h3>
+        <p>Systems generate or consume <strong>files</strong> exchanged <strong>asynchronously</strong> — no direct or real-time communication. Files use a conventional or custom format (CSV, XML). Needs data transformation: mapping, validation, enrichment. Best for <strong>batch processing</strong> and older systems — <strong>not</strong> for real-time needs, large volumes, or when speed doesn't matter. Weaknesses: error handling, data consistency, monitoring, error recovery. Example: HR drops an employee CSV into a shared network directory.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><line x1="20" y1="50" x2="140" y2="50"/><circle cx="45" cy="50" r="5"/><circle cx="80" cy="50" r="5"/><circle cx="115" cy="50" r="5"/></svg>
+      <div class="method-text">
+        <h3>Real-Time (Near Real-Time)</h3>
+        <p>Instantaneous movement of data and communication — within milliseconds or seconds. <strong>Event-driven</strong>, with a <strong>continuous, uninterrupted</strong> data flow. High throughput, low latency. Used in IoT, trading platforms, financial and real-time analytics. Weakness: needs scalability, event processing, and data consistency. Example: placing an order generates an event uploaded to the integration platform instantly.</p>
+      </div>
+    </div>
+
+    <div class="method-card">
+      <svg class="topo" viewBox="0 0 160 100"><line x1="20" y1="30" x2="80" y2="30"/><circle cx="20" cy="30" r="6"/><circle cx="80" cy="30" r="6"/><rect x="65" y="60" width="30" height="25" rx="3"/><line x1="20" y1="75" x2="65" y2="72"/><circle cx="20" cy="75" r="6"/></svg>
+      <div class="method-text">
+        <h3>Hybrid</h3>
+        <p>Combines traditional and modern methods in the most effective way to meet requirements — see the four combinations in the section below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 06 HYBRID INTEGRATION -->
+  <section class="block" id="hybrid">
+    <div class="block-head">
+      <span class="block-num">06</span>
+      <h2>4 Hybrid Integration Combinations</h2>
+    </div>
+    <div class="pill-grid four">
+      <div class="pill-card"><span class="pill-index">1</span>Point-to-Point + Message Queuing — P2P handles immediate request-response; MQ handles asynchronous, reliable communication</div>
+      <div class="pill-card"><span class="pill-index">2</span>Hub-and-Spoke + Pub/Sub — the hub makes point-to-point connections possible; pub/sub enables event-driven communication; one piece of middleware, two behaviors</div>
+      <div class="pill-card"><span class="pill-index">3</span>File-Based + Real-Time — File-Based handles bulk/historical data on a schedule; Real-Time handles events acted on immediately</div>
+      <div class="pill-card"><span class="pill-index">4</span>SOA + Microservices — coarse-grained reusable services (SOA) coexist with fine-grained, independent microservices; often a migration path as older services are broken apart over time</div>
+    </div>
+    <div class="card-grid two" style="margin-top:20px;">
+      <div class="def-card">
+        <h3>SOA</h3>
+        <p>Emerged from the late 1990s to the 2000s. Associated standards: <strong>SOAP, WSDL, UDDI</strong>.</p>
+      </div>
+      <div class="def-card">
+        <h3>Microservices</h3>
+        <p>Popularized around <strong>2011–2014</strong>.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 07 COMPARISON TABLES -->
+  <section class="block" id="compare">
+    <div class="block-head">
+      <span class="block-num">07</span>
+      <h2>Comparison Tables</h2>
+    </div>
+
+    <div class="compare-table two-tone">
+      <div class="compare-col good">
+        <h4>Point-to-Point</h4>
+        <ul>
+          <li>Grows very fast</li>
+          <li>Tight coupling</li>
+          <li>Links in every system</li>
+          <li>Simple, direct, quick</li>
+          <li>Unmanageable with many systems</li>
+          <li>No middleware</li>
+        </ul>
+      </div>
+      <div class="compare-divider" aria-hidden="true">vs</div>
+      <div class="compare-col bad">
+        <h4>Hub-and-Spoke</h4>
+        <ul>
+          <li>One hub per system</li>
+          <li>Loose coupling</li>
+          <li>Links to hub only</li>
+          <li>Scales, decouples, centralized</li>
+          <li>Single point of failure</li>
+          <li>ESB or integration hub</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compare-table two-tone" style="margin-top:20px;">
+      <div class="compare-col good">
+        <h4>Request-Response</h4>
+        <ul>
+          <li>Synchronous</li>
+          <li>Sender waits</li>
+          <li>No middleware</li>
+          <li>Sender knows receiver</li>
+          <li>Adding a receiver requires changing center</li>
+          <li>HTTP APIs, web services</li>
+          <li>Risk is latency and timeouts</li>
+        </ul>
+      </div>
+      <div class="compare-divider" aria-hidden="true">vs</div>
+      <div class="compare-col bad">
+        <h4>Pub/Sub</h4>
+        <ul>
+          <li>Asynchronous</li>
+          <li>Publishes and moves on</li>
+          <li>Has message broker</li>
+          <li>Sender only knows topic</li>
+          <li>Subscribe only; sender unchanged</li>
+          <li>Apache Kafka, RabbitMQ</li>
+          <li>Broker becomes a weak point</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="compare-table two-tone" style="margin-top:20px;">
+      <div class="compare-col good">
+        <h4>File-Based</h4>
+        <ul>
+          <li>On a schedule, in batches</li>
+          <li>Systems share a folder</li>
+          <li>Large volumes, legacy systems, no urgency</li>
+          <li>Stale data; failure can go unnoticed</li>
+          <li>Needs monitoring, notification, error recovery</li>
+        </ul>
+      </div>
+      <div class="compare-divider" aria-hidden="true">vs</div>
+      <div class="compare-col bad">
+        <h4>Real-Time</h4>
+        <ul>
+          <li>Within milliseconds</li>
+          <li>Systems talk through an event stream</li>
+          <li>IoT, trading, live tracking, live inventory</li>
+          <li>Complex, expensive, demands high throughput</li>
+          <li>Needs scalable event processing, consistency guarantees</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- 08 TERMS GLOSSARY -->
+  <section class="block" id="terms">
+    <div class="block-head">
+      <span class="block-num">08</span>
+      <h2>Terms Glossary</h2>
+    </div>
+    <div class="pill-grid four">
+      <div class="pill-card"><span class="pill-index">•</span><strong>Data integration pattern</strong> — a structured, named approach to transporting, transforming, and combining data</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Data silo</strong> — data trapped in one system, in a format other systems can't use</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Migration</strong> — one-way, one-time transfer from a source system to a target system</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Filtering criteria</strong> — the rules that decide which data a migration will carry</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Transformation</strong> — changing data's format or structure so the receiving system can use it</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Transactional</strong> — only data changed since the last run is moved</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Reverse ETL</strong> — pushing warehouse data back into an operational system such as Salesforce</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Correlation</strong> — bi-directional sync performed only on records that exist in both datasets</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Union</strong> — all records from both sets; what bi-directional sync covers</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Intersection</strong> — only records in both sets; what correlation covers</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>ETL / ELT</strong> — two ways of doing aggregation</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Data warehouse</strong> — the single store that aggregation feeds</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Interface</strong> — the direct link built between two systems in point-to-point integration</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Tight coupling</strong> — a change in one system forces changes in the systems connected to it</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Integration hub</strong> — the central component that routes and transforms between connected systems</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Enterprise Service Bus (ESB)</strong> — the classic implementation of an integration hub</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Decoupling</strong> — systems don't need knowledge of each other's internals to work together</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Single point of failure</strong> — one component whose failure stops everything; the hub's main risk</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Message broker</strong> — the middleware that receives published messages and distributes them</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Topic/channel</strong> — the named category a message is published to and subscribed from</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Blocking operation</strong> — the requesting system stops processing until the response or timeout arrives</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Timeout</strong> — the limit on how long a requester will wait before giving up</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Batch processing</strong> — handling data in scheduled groups rather than one item at a time</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Data mapping</strong> — matching a field in one system's format to the right field in another's</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Event-driven communication</strong> — integration triggered by events rather than a schedule or a request</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Throughput</strong> — how much data a system can handle in a given time</div>
+      <div class="pill-card"><span class="pill-index">•</span><strong>Latency</strong> — the delay between sending something and it arriving</div>
+    </div>
+  </section>
+
+  <!-- 09 SHOPEE -->
+  <section class="block" id="shopee">
+    <div class="block-head">
+      <span class="block-num">09</span>
+      <h2>One App, Five Patterns — Shopee</h2>
+    </div>
+    <div class="pattern-grid" style="grid-template-columns: repeat(1, 1fr); gap: 12px;">
+      <div class="pattern-card"><h3>You pay at checkout and wait for the screen</h3><p>Shape: none · Wiring: <strong>Request-Response</strong></p></div>
+      <div class="pattern-card"><h3>The stock count drops the moment you order</h3><p>Shape: none · Wiring: <strong>Real-Time</strong></p></div>
+      <div class="pattern-card"><h3>The seller, the courier, and you all get the order update</h3><p>Shape: <strong>Broadcast</strong> · Wiring: <strong>Pub/Sub</strong></p></div>
+      <div class="pattern-card"><h3>Nightly sales figures land in the seller's dashboard</h3><p>Shape: <strong>Aggregation</strong> · Wiring: <strong>File-Based</strong></p></div>
+      <div class="pattern-card"><h3>Shopee and the courier reconcile only their shared orders</h3><p>Shape: <strong>Correlation</strong> · Wiring: <strong>Hub-and-Spoke</strong></p></div>
+    </div>
+  </section>
+
+  <section class="cta">
+    <h2>Know it cold?</h2>
+    <p>Test yourself with the Module 3 quiz — 50 questions, same content, no peeking.</p>
+    <a class="cta-btn" href="quiz3.html">Take the Quiz →</a>
+  </section>
+
+</main>
+
+<footer class="footer">
+  <p>CIT 3102 · Systems Integration and Architecture — Module 3 Reviewer</p>
+</footer>
+
+</body>
+</html>
